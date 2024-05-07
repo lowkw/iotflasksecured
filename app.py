@@ -25,9 +25,19 @@ github = oauth.register('github',
 # def hello_world():
 #     return f'Hello, stranger'
 def index():
-    token = session.get('access_token')
+    auth_token = session.get('access_token')
     if "access_token" in session:
-        return f'Hello, you are authenticated. Your OAuth2 authentication token is : {token}'
+        headers = {
+            "Authorization": f"token {auth_token.get('access_token')}",
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "Github OAuth 2.0 Client"
+        }
+        response = requests.get("https://api.github.com/user", headers=headers)
+        if response.status_code == 200:
+            user_data = response.json()
+            return f'Hello {user_data["name"]}, you are logged in.'
+        else:
+            return f'Hello, stranger'
     else:
         return f'Hello, stranger'
 
