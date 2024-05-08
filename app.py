@@ -1,6 +1,6 @@
 import requests
 
-from flask import Flask, url_for, session, redirect, jsonify
+from flask import Flask, url_for, session, redirect, jsonify, render_template
 from flask_cors import CORS
 from authlib.integrations.flask_client import OAuth
 
@@ -35,11 +35,10 @@ def index():
         response = requests.get("https://api.github.com/user", headers=headers)
         if response.status_code == 200:
             user_data = response.json()
-            return f'Hello {user_data["name"]}, you are logged in.'
-        else:
-            return f'Hello, stranger'
+            name=user_data["name"]
+            return render_template('home.html', user=name)
     else:
-        return f'Hello, stranger'
+        return render_template('home.html', user='')
 
 
 @app.route('/login')

@@ -1,0 +1,36 @@
+<!-- templates/login.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    {% if user %}
+        <div class="row">
+            <h1 class="text-2xl font-bold mb-4">Logged in as <strong>{{user}}</strong></h1>
+        </div>
+        <div class="row">
+            <button id="logoutButton" type="button" class="btn btn-primary">Log Out</button>
+            <script>
+                let button = document.getElementById('logoutButton');
+                button.addEventListener("click", function () {
+                    window.location.href = "{{ url_for('.logout') }}";
+                })
+            </script>
+        </div>
+
+    {% else %}
+        <div class="row">
+            <h1 class="text-2xl font-bold mb-4">Hello stranger</h1>
+        </div>
+        <div class="row">
+            <button id="loginButton" type="button" class="btn btn-primary">Log In</button>
+            <script>
+                let button = document.getElementById('loginButton');
+                button.addEventListener("click", function () {
+                    window.location.href = "{{ url_for('.login') }}";
+                })
+            </script>
+        </div>
+
+    {% endif %}
+</div>
+{% endblock %}
